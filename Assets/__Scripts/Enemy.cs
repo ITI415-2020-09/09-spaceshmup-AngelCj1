@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour {
 
@@ -19,6 +20,8 @@ public class Enemy : MonoBehaviour {
     public float damageDoneTime; // Time to stop showing damage
     public bool notifiedOfDestruction = false; // Will be used later
 
+
+
     protected BoundsCheck bndCheck;
 
     private void Awake()
@@ -27,7 +30,7 @@ public class Enemy : MonoBehaviour {
         // Get materials and colors for this GameObject and its children
         materials = Utils.GetAllMaterials(gameObject);
         originalColors = new Color[materials.Length];
-        for (int i=0; i<materials.Length; i++)
+        for (int i = 0; i < materials.Length; i++)
         {
             originalColors[i] = materials[i].color;
         }
@@ -69,7 +72,7 @@ public class Enemy : MonoBehaviour {
         pos = tempPos;
     }
 
-    private void OnCollisionEnter(Collision coll)
+        private void OnCollisionEnter(Collision coll)
     {
         GameObject otherGO = coll.gameObject;
         switch (otherGO.tag)
@@ -97,9 +100,11 @@ public class Enemy : MonoBehaviour {
                     notifiedOfDestruction = true;
                     // Destroy this enemy
                     Destroy(this.gameObject);
+                  
                 }
                 Destroy(otherGO);
                 break;
+                
 
             default:
                 print("Enemy hit by non-ProjectileHero: " + otherGO.name);
