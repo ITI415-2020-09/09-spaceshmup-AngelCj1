@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour {
@@ -19,6 +20,14 @@ public class Main : MonoBehaviour {
         WeaponType.blaster, WeaponType.blaster, WeaponType.spread, WeaponType.shield
     };
 
+    public Text scoreGT;
+
+    void Start()
+    {
+        GameObject scoreGO = GameObject.Find("ScoreCounter");
+        scoreGT = scoreGO.GetComponent<Text>();
+        scoreGT.text = "0";
+    }
     private BoundsCheck bndCheck;
 
     public void ShipDestroyed( Enemy e)
@@ -38,6 +47,18 @@ public class Main : MonoBehaviour {
 
             // Set it to the position of the destroyed ship
             pu.transform.position = e.transform.position;
+        }
+        // Parse the text of the scoreGT into an int
+        int score = int.Parse( scoreGT.text );
+        // Add points for catching the apple
+        score += 100;
+        // Convert the score back to a string and display it
+        scoreGT.text = score.ToString();
+
+        // Track the high score
+        if (score > HighScore.score)
+        {
+            HighScore.score = score;
         }
     }
 
@@ -93,6 +114,11 @@ public class Main : MonoBehaviour {
     {
         // Reload _Scene_0 to restart the game
         SceneManager.LoadScene("_Scene_0");
+
+        // Restart the game, which doesn't affect HighScore.Score
+        {
+            Application.LoadLevel("_Scene_0");
+        }
     }
     ///<summary>
     ///Static function that gets a WeaponDefinition from the WEAP_DICT static
